@@ -33,7 +33,6 @@ module.exports = function (app, express) {
         // create a bear (accessed at POST http://localhost:8080/api/bears)
         .post(function (req, res) {
 
-            console.log(C)
             var bear = new Bear(req.body);      // create a new instance of the Bear model
             bear.name = req.body.name;  // set the bears name (comes from the request)
             console.log(req.body.name);
@@ -105,13 +104,12 @@ module.exports = function (app, express) {
         });
 
 
-
     router.route('/comments')
         // get the bear with that id (accessed at GET http://localhost:8080/api/bears/:bear_id)
         .get(function (req, res) {
 
             Comment.find(function (err, comments) {
-               // console.log(req.params);
+                // console.log(req.params);
                 if (err)
                     res.send(err);
                 res.json(comments);
@@ -122,7 +120,7 @@ module.exports = function (app, express) {
         // get the bear with that id (accessed at GET http://localhost:8080/api/bears/:bear_id)
         .get(function (req, res) {
             console.log(req.params.bear_id);
-            Comment.find({'creator_id':req.params.bear_id},function (err, comments) {
+            Comment.find({'creator_id': req.params.bear_id}, function (err, comments) {
                 console.log(req.params);
                 if (err)
                     res.send(err);
@@ -130,6 +128,25 @@ module.exports = function (app, express) {
             });
         });
 
+    router.route('/lookupbearsandcomments/')
+        // get the bear with that id (accessed at GET http://localhost:8080/api/bears/:bear_id)
+        .get(function (req, res) {
+            Bear.aggregate([
+                {
+                    $lookup: {
+                        from: "Comment",
+                        localField: "creator_id",
+                        foreignField: "_id",
+                        as: "comments"
+                    }
+                }
+            ], function (err, bears) {
+                if (err)
+                    res.send(err);
+
+                res.json(bears);
+            });
+        });
 
 
 };
