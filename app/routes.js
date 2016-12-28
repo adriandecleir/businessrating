@@ -1,4 +1,5 @@
 module.exports = function (app, express) {
+    var mongoose = require('mongoose');
 
     // server routes ====================================================	======
     // handle things like ap	 calls
@@ -74,6 +75,7 @@ module.exports = function (app, express) {
 
 
             var comment = new Comment();      // create a new instance of the Bear model
+            console.log(comment);
             comment.comment = req.body.comment;  // set the bears name (comes from the request)
             comment.creator_id = req.body.creator_id;
 
@@ -85,15 +87,26 @@ module.exports = function (app, express) {
             });
 
         });
-
+    var bearcommentor = '';
     router.route('/comments')
+
         .post(function (req, res) {
+
+          Bear.findById(req.body.creator_id, function (err, bear) {
+                if (err) {
+                    res.send(err);
+                }
+              bearcommentor = bear;
+              //console.log(bear);
+            });
+           //console.log(bearcommentor);
 
 
             var comment = new Comment();      // create a new instance of the Bear model
             comment.comment = req.body.comment;
-            comment.creator_id = req.body.creator_id; // set the bears name (comes from the request)
-            console.log(req.body.comment);
+            comment.creator_id = mongoose.Types.ObjectId(bearcommentor._id);
+            //console.log(comment);
+
             // save the comment and check for errors
             comment.save(function (err) {
                 if (err)
@@ -131,12 +144,13 @@ module.exports = function (app, express) {
     router.route('/lookupbearsandcomments/')
         // get the bear with that id (accessed at GET http://localhost:8080/api/bears/:bear_id)
         .get(function (req, res) {
+
             Bear.aggregate([
                 {
                     $lookup: {
-                        from: "Comment",
-                        localField: "creator_id",
-                        foreignField: "_id",
+                        from: "comments",
+                        localField: "_id",
+                        foreignField: "creator_id",
                         as: "comments"
                     }
                 }
@@ -147,6 +161,27 @@ module.exports = function (app, express) {
                 res.json(bears);
             });
         });
+
+    var jwt = require('express-jwt');
+    var auth = jwt({
+        secret: 'MY_SECRET',
+        userProperty: 'payload'
+    });
+
+    var ctrlProfile = require('../controllers/profile');
+    var ctrlAuth = require('../controllers/authentication');
+
+    router.get('/profile', auth, ctrlProfile.profileRead);
+
+    // error handlers
+    // Catch unauthorised errors
+    app.use(function (err, req, res, next) {
+        if (err.name === 'UnauthorizedError') {
+            res.status(401);
+            res.json({"message" : err.name + ": " + err.message});
+        }
+    });
+
 
 
 };

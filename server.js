@@ -4,11 +4,13 @@ var app            = express();
 var mongoose       = require('mongoose');
 var bodyParser     = require('body-parser');
 var methodOverride = require('method-override');
+var passport = require('passport');
 
 // configuration ===========================================
 	
 // config files
 var db = require('./config/db');
+require('./config/passport');
 
 var port = process.env.PORT || 8080; // set our port
 mongoose.connect(db.url); // connect to our mongoDB database (commented out after you enter in your own credentials)
@@ -28,5 +30,8 @@ require('./app/routes')(app,express); // pass our application into our routes
 
 // start app ===============================================
 app.listen(port);	
+
+exports = module.exports = app;
+
+app.use(passport.initialize());
 console.log('Magic happens on port ' + port); 			// shoutout to the user
-exports = module.exports = app; 						// expose app
