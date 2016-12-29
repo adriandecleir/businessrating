@@ -1,1 +1,11 @@
 body { padding-top:30px; }
+
+
+
+#confirmpassword.ng-invalid-compare-to + div {
+    display:inline;
+}
+
+#confirmpassword + div, #confirmpassword.ng-pristine + div {
+    display:none;
+}

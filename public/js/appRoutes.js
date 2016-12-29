@@ -17,7 +17,26 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', f
             templateUrl: 'views/geek.html',
             controller: 'GeekController'
         })
-
+        .when('/register', {
+            templateUrl: '/views/register.html',
+            controller: 'RegisterController',
+            controllerAs: 'vm'
+        })
+        .when('/login', {
+            templateUrl: '/views/login.html',
+            controller: 'LoginController',
+            controllerAs: 'vm'
+        })
+        .when('/profile', {
+            templateUrl: '/views/profile.html',
+            controller: 'ProfileController',
+            controllerAs: 'vm'
+        })
+        .when('/logout', {
+            templateUrl: '/views/logout.html',
+            controller: 'LogoutController',
+            controllerAs: 'vm'
+        })
         .when('/bears', {
             templateUrl: 'views/bears.html',
             controller: 'BearController'

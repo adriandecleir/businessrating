@@ -168,10 +168,12 @@ module.exports = function (app, express) {
         userProperty: 'payload'
     });
 
-    var ctrlProfile = require('../controllers/profile');
-    var ctrlAuth = require('../controllers/authentication');
+    var ctrlProfile = require('./controllers/profile');
+    var ctrlAuth = require('./controllers/authentication');
 
     router.get('/profile', auth, ctrlProfile.profileRead);
+    router.post('/register', ctrlAuth.register);
+    router.post('/login', ctrlAuth.login);
 
     // error handlers
     // Catch unauthorised errors
