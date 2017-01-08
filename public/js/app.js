@@ -12,6 +12,6 @@ angular.module('sampleApp', [
     'AuthService',
     'LoginCtrl',
     'DataService',
-    'ProfileCtrl',
+    'AccountCtrl',
     'LogoutCtrl'
 ]);

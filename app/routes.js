@@ -6,11 +6,8 @@ module.exports = function (app, express) {
     // authentication 	outes
 
     // frontend routes ==================================================	======
-    // route to handle all angular r	quests
-    /*app.get('*', function(req,		es) {
-     res.sendfile('./public/index.	tml');
-     });
-     */
+    // route to handle all angular requests
+
 
     // ROUTES FOR OUR API
 // =============================================================================
@@ -26,6 +23,10 @@ module.exports = function (app, express) {
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api
     app.use('/api', router);
+    app.get('*', function(req,res) {
+        res.sendfile('./public/index.html');
+    });
+
 
     var Bear = require('./models/bear');
     var Comment = require('./models/comment');
@@ -173,6 +174,8 @@ module.exports = function (app, express) {
 
     router.get('/profile', auth, ctrlProfile.profileRead);
     router.post('/register', ctrlAuth.register);
+    router.post('/update', ctrlAuth.update);
+    router.post('/updatepassword', ctrlAuth.updatePassword);
     router.post('/login', ctrlAuth.login);
 
     // error handlers

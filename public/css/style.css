@@ -2,10 +2,6 @@ body { padding-top:30px; }
 
 
 
-#confirmpassword.ng-invalid-compare-to + div {
-    display:inline;
-}
-
-#confirmpassword + div, #confirmpassword.ng-pristine + div {
-    display:none;
+input.ng-touched.ng-empty, input.ng-invalid-email, .ng-submitted input.ng-invalid {
+    background: #ffebeb none repeat scroll 0 0;
 }

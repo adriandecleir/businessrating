@@ -27,9 +27,14 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', f
             controller: 'LoginController',
             controllerAs: 'vm'
         })
-        .when('/profile', {
-            templateUrl: '/views/profile.html',
-            controller: 'ProfileController',
+        .when('/account', {
+            templateUrl: '/views/account.html',
+            controller: 'AccountController',
+            controllerAs: 'vm'
+        })
+        .when('/account/change-password', {
+            templateUrl: '/views/account-changepassword.html',
+            controller: 'AccountController',
             controllerAs: 'vm'
         })
         .when('/logout', {
