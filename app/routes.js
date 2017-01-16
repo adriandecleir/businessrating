@@ -163,6 +163,12 @@ module.exports = function (app, express) {
             });
         });
 
+
+    /*
+    ..
+    BUSINESS RATING APP STARTS HERE
+    ..
+    */
     var jwt = require('express-jwt');
     var auth = jwt({
         secret: 'MY_SECRET',
@@ -171,12 +177,36 @@ module.exports = function (app, express) {
 
     var ctrlProfile = require('./controllers/profile');
     var ctrlAuth = require('./controllers/authentication');
+    var User = require('./models/user');
 
     router.get('/profile', auth, ctrlProfile.profileRead);
     router.post('/register', ctrlAuth.register);
     router.post('/update', ctrlAuth.update);
     router.post('/updatepassword', ctrlAuth.updatePassword);
     router.post('/login', ctrlAuth.login);
+
+    router.route('/profiles')
+
+
+        .get(function (req, res) {
+            User.find(function (err, users) {
+                if (err)
+                    res.send(err);
+
+                res.json(users);
+            });
+        });
+    router.route('/profiles/:slug')
+
+        // get the bear with that id (accessed at GET http://localhost:8080/api/bears/:bear_id)
+        .get(function (req, res) {
+            User.findOne({"slug": req.params.slug}, function (err, user) {
+                console.log(req.params);
+                if (err)
+                    res.send(err);
+                res.json(user);
+            });
+        });
 
     // error handlers
     // Catch unauthorised errors

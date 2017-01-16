@@ -45,7 +45,16 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', f
         .when('/bears', {
             templateUrl: 'views/bears.html',
             controller: 'BearController'
+        })
+        .when('/profiles', {
+            templateUrl: 'views/profiles.html',
+            controller: 'ProfileController'
+        })
+        .when('/profiles/:slug', {
+            templateUrl: 'views/profile.html',
+            controller: 'ProfileController'
         });
+
 
     $locationProvider.html5Mode(true);
 
